@@ -50,18 +50,6 @@
             </div>
 
             <div class="mb-4">
-                <h3 class="text-xs uppercase text-gray-400 mb-2">Orders</h3>
-                <a href="{{ route('supply.orders') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">
-                    <i class="fas fa-shopping-cart mr-3"></i>
-                    <span>Process Orders</span>
-                </a>
-                <a href="{{ route('supply.shipments') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">
-                    <i class="fas fa-truck mr-3"></i>
-                    <span>Manage Shipments</span>
-                </a>
-            </div>
-
-            <div class="mb-4">
                 <h3 class="text-xs uppercase text-gray-400 mb-2">Communication</h3>
                 <a href="{{ route('supply.chat-manufacturer') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-comments mr-3"></i>
@@ -100,21 +88,15 @@
     @else
         <!-- Supplier Dashboard Content -->
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold mb-4">Pending Orders</h3>
-            <div class="text-3xl font-bold text-blue-600">{{ $pendingOrders ?? 0 }}</div>
-            <p class="text-gray-600">Orders to process</p>
-        </div>
-
-        <div class="bg-white rounded-lg shadow p-6">
             <h3 class="text-lg font-semibold mb-4">Stock Status</h3>
             <div class="text-3xl font-bold text-green-600">{{ $stockStatus ?? '0%' }}</div>
             <p class="text-gray-600">Current inventory level</p>
         </div>
 
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold mb-4">Active Shipments</h3>
-            <div class="text-3xl font-bold text-purple-600">{{ $activeShipments ?? 0 }}</div>
-            <p class="text-gray-600">In transit</p>
+            <h3 class="text-lg font-semibold mb-4">Last Update</h3>
+            <div class="text-3xl font-bold text-blue-600">{{ $lastUpdate ?? 'Never' }}</div>
+            <p class="text-gray-600">Last inventory update</p>
         </div>
     @endif
 </div>

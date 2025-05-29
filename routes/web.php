@@ -6,7 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\MarketController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SupplyController;
 
 // Authentication Routes
@@ -27,20 +27,22 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/vendors/validation', [AdminController::class, 'vendorValidation'])->name('vendors.validation');
         Route::get('/facility-visits', [AdminController::class, 'facilityVisits'])->name('facility-visits');
         Route::get('/workforce', [AdminController::class, 'workforce'])->name('workforce');
-        Route::get('/users', [AdminController::class, 'users'])->name('users');
         Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
     });
 
     // Market Routes (Wholesaler, Retailer, Customer)
     Route::prefix('market')->name('market.')->group(function () {
-        Route::get('/bulk-orders', [MarketController::class, 'bulkOrders'])->name('bulk-orders');
-        Route::get('/supplier-coordination', [MarketController::class, 'supplierCoordination'])->name('supplier-coordination');
-        Route::get('/place-orders', [MarketController::class, 'placeOrders'])->name('place-orders');
-        Route::get('/inventory', [MarketController::class, 'inventory'])->name('inventory');
-        Route::get('/deliveries', [MarketController::class, 'deliveries'])->name('deliveries');
-        Route::get('/products', [MarketController::class, 'products'])->name('products');
-        Route::get('/orders', [MarketController::class, 'orders'])->name('orders');
-        Route::get('/track-orders', [MarketController::class, 'trackOrders'])->name('track-orders');
+        // Redirect old market routes to the new order system
+        Route::get('/place-orders', [OrderController::class, 'create'])->name('place-orders');
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('/track-orders', [OrderController::class, 'index'])->name('track-orders');
+        
+        // Keep other market routes that might be needed later
+        Route::get('/bulk-orders', [OrderController::class, 'create'])->name('bulk-orders');
+        Route::get('/supplier-coordination', [OrderController::class, 'supplierCoordination'])->name('supplier-coordination');
+        Route::get('/inventory', [OrderController::class, 'index'])->name('inventory');
+        Route::get('/deliveries', [OrderController::class, 'index'])->name('deliveries');
+        Route::get('/products', [OrderController::class, 'index'])->name('products');
     });
 
     // Supply Routes (Vendor & Supplier)
@@ -50,8 +52,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/chat', [SupplyController::class, 'chat'])->name('chat');
         Route::get('/inventory', [SupplyController::class, 'inventory'])->name('inventory');
         Route::get('/stock-update', [SupplyController::class, 'stockUpdate'])->name('stock-update');
-        Route::get('/orders', [SupplyController::class, 'orders'])->name('orders');
-        Route::get('/shipments', [SupplyController::class, 'shipments'])->name('shipments');
         Route::get('/chat-manufacturer', [SupplyController::class, 'chatManufacturer'])->name('chat-manufacturer');
         Route::get('/reports', [SupplyController::class, 'reports'])->name('reports');
     });
@@ -71,6 +71,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Worker Management Routes
     Route::resource('workers', WorkerController::class);
+
+    // Order Management Routes
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
 });
 
 Route::get('/', function () {
