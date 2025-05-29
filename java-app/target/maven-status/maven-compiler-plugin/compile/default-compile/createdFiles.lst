@@ -1,0 +1,6 @@
+com\example\vendormanagement\VendorController.class
+com\example\vendormanagement\VendorValidationApplication.class
+com\example\vendormanagement\PdfProcessor.class
+com\supplychain\DatabaseConnector.class
+com\supplychain\ValidationService.class
+com\supplychain\VisitScheduler.class
