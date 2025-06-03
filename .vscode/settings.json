@@ -1,0 +1,9 @@
+{
+         "php.executablePath": "C:/xampp/php/php.exe",
+         "files.exclude": {
+             "**/vendor": true,
+             "**/node_modules": true
+         },
+         "java.configuration.updateBuildConfiguration": "automatic",
+         "java.jdt.ls.java.home": "C:/Program Files/Java/jdk-21"
+     }
