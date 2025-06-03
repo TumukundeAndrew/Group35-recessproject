@@ -3,62 +3,106 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sunflower SCM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js" integrity="sha384-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    @stack('styles')
 </head>
-<body class="bg-gradient-to-r from-blue-500 to-purple-600 font-sans">
-    <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <div class="bg-green-800 text-white w-64 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform transition duration-200 ease-in-out md:transform-none">
-            <h2 class="text-2xl font-bold text-center">Sunflower SCM</h2>
-            <nav>
-                @auth
-                    <a href="{{ route('dashboard', ['role' => auth()->user()->role]) }}" class="block py-2.5 px-4 rounded hover:bg-green-700 {{ request()->routeIs('dashboard') ? 'bg-amber-500' : '' }}"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a>
-                    @if(auth()->user()->role === 'admin')
-                        <a href="{{ route('dashboard', ['role' => 'analytics']) }}" class="block py-2.5 px-4 rounded hover:bg-green-700 {{ request()->routeIs('dashboard') && request()->route('role') === 'analytics' ? 'bg-amber-500' : '' }}"><i class="fas fa-chart-line mr-2"></i> Analytics</a>
-                        <a href="#" class="block py-2.5 px-4 rounded hover:bg-green-700"><i class="fas fa-users mr-2"></i> Vendors</a>
-                    @elseif(auth()->user()->role === 'vendor')
-                        <a href="#" class="block py-2.5 px-4 rounded hover:bg-green-700"><i class="fas fa-file-pdf mr-2"></i> Application</a>
-                    @elseif(auth()->user()->role === 'supplier')
-                        <a href="#" class="block py-2.5 px-4 rounded hover:bg-green-700"><i class="fas fa-seedling mr-2"></i> Inventory</a>
-                        <a href="{{ route('orders.view') }}" class="block py-2.5 px-4 rounded hover:bg-green-700"><i class="fas fa-shopping-cart mr-2"></i> Orders</a>
-                    @elseif(auth()->user()->role === 'manufacturer')
-                        <a href="{{ route('dashboard', ['role' => 'analytics']) }}" class="block py-2.5 px-4 rounded hover:bg-green-700 {{ request()->routeIs('dashboard') && request()->route('role') === 'analytics' ? 'bg-amber-500' : '' }}"><i class="fas fa-chart-line mr-2"></i> Analytics</a>
-                        <a href="#" class="block py-2.5 px-4 rounded hover:bg-green-700"><i class="fas fa-industry mr-2"></i> Production</a>
-                    @elseif(auth()->user()->role === 'wholesaler')
-                        <a href="{{ route('orders.view') }}" class="block py-2.5 px-4 rounded hover:bg-green-700"><i class="fas fa-shopping-cart mr-2"></i> Orders</a>
-                    @elseif(auth()->user()->role === 'retailer')
-                        <a href="{{ route('dashboard', ['role' => 'analytics']) }}" class="block py-2.5 px-4 rounded hover:bg-green-700 {{ request()->routeIs('dashboard') && request()->route('role') === 'analytics' ? 'bg-amber-500' : '' }}"><i class="fas fa-chart-line mr-2"></i> Analytics</a>
-                    @elseif(auth()->user()->role === 'customer')
-                        <a href="#" class="block py-2.5 px-4 rounded hover:bg-green-700"><i class="fas fa-star mr-2"></i> Feedback</a>
-                    @endif
-                    <a href="{{ route('logout') }}" class="block py-2.5 px-4 rounded hover:bg-green-700" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                @endauth
-            </nav>
-        </div>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col ml-0 md:ml-64">
-            <!-- Top Bar -->
-            <header class="bg-green-700 text-white p-4 flex justify-between items-center shadow-md">
-                <h1 class="text-xl font-semibold">{{ ucfirst(request()->route('role')) }} Dashboard</h1>
-                @auth
-                    <span class="text-sm">Welcome, {{ auth()->user()->name }} ({{ ucfirst(auth()->user()->role) }})</span>
-                @endauth
-            </header>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav me-auto">
+                        @auth
+                            @if(auth()->user()->role === 'admin')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.reports') }}">Reports</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.workforce') }}">Workforce</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.download') }}">Download</a>
+                                </li>
+                            @endif
+                        @endauth
+                    </ul>
 
-            <!-- Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
-                @yield('content')
-            </main>
-        </div>
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ms-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="py-4">
+            @yield('content')
+        </main>
     </div>
-    <script type="module" src="{{ Vite::asset('resources/js/app.js') }}"></script>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+    @stack('scripts')
 </body>
 </html>

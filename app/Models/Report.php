@@ -3,11 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Report extends Model {
-    protected $fillable = ['user_id', 'report_type', 'content', 'scheduled_date', 'status'];
+    protected $fillable = [
+        'name',
+        'description',
+        'frequency',
+        'scheduled_time',
+        'type',
+        'is_active',
+    ];
 
-    public function user() {
-        return $this->belongsTo(User::class);
+    protected $casts = [
+        'is_active' => 'boolean',
+        'scheduled_time' => 'datetime',
+    ];
+
+    public function stakeholders(): BelongsToMany
+    {
+        return $this->belongsToMany(Stakeholder::class)
+            ->withPivot('customizations')
+            ->withTimestamps();
     }
 }

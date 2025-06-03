@@ -8,13 +8,15 @@ return new class extends Migration {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('stakeholder_id')->nullable();
             $table->string('report_type'); // e.g., sales, inventory
-            $table->text('content');
+            $table->string('file_path')->nullable(); // Path to the PDF file
             $table->date('scheduled_date');
             $table->string('status')->default('pending'); // pending, sent
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
         });
     }
 
