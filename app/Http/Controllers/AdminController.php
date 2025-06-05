@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Worker;
+
 use App\Models\Stakeholder;
 use App\Models\ReportSchedule;
 use App\Models\ReportHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+use App\Models\User;
+use App\Models\Order;
+
+use Carbon\Carbon;
+
 
 class AdminController extends Controller
 {
@@ -17,11 +24,27 @@ class AdminController extends Controller
         $this->middleware('role:admin');
     }
 
+    public function vendorValidation()
+    {
+        $pendingVendors = User::where('role', 'vendor')
+                             ->where('status', 'pending')
+                             ->latest()
+                             ->paginate(10);
+        return view('admin.vendor-validation', compact('pendingVendors'));
+    }
+
+    public function facilityVisits()
+    {
+        $scheduledVisits = [];  // You can implement the facility visits logic here
+        return view('admin.facility-visits', compact('scheduledVisits'));
+    }
+
     public function workforce()
     {
         $workers = Worker::latest()->paginate(10);
         return view('admin.workforce', compact('workers'));
     }
+
 
     public function download()
     {
@@ -164,4 +187,5 @@ class AdminController extends Controller
 
         return $customizations[$reportType][$stakeholderType] ?? [];
     }
+
 } 

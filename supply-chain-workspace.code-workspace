@@ -1,0 +1,36 @@
+{
+    "folders": [
+        {
+            "path": "laravel-app"
+        },
+        {
+            "path": "java-app"
+        }
+    ],
+    "settings": {
+        "php.executablePath": "C:/xampp/php/php.exe",
+        "java.configuration.updateBuildConfiguration": "automatic",
+        "java.jdt.ls.java.home": "C:/Program Files/Java/jdk-21",
+        "files.exclude": {
+            "**/vendor": true,
+            "**/node_modules": true
+        },
+        "sqltools.connections": [
+            {
+                "mysqlOptions": {
+                    "authProtocol": "default",
+                    "enableSsl": "Disabled"
+                },
+                "previewLimit": 50,
+                "server": "localhost",
+                "port": 3306,
+                "driver": "MySQL",
+                "name": "supply-chain",
+                "database": "supply_chain",
+                "username": "root",
+                "password": ""
+            }
+        ],
+        "java.compile.nullAnalysis.mode": "automatic"
+    }
+}

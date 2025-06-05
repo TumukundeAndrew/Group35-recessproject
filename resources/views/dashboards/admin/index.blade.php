@@ -29,13 +29,9 @@
             </a>
         </div>
 
-        <!-- User Management -->
+        <!-- System -->
         <div class="mb-4">
             <h3 class="text-xs uppercase text-gray-400 mb-2">System</h3>
-            <a href="{{ route('admin.users') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">
-                <i class="fas fa-user-cog mr-3"></i>
-                <span>User Management</span>
-            </a>
             <a href="{{ route('admin.reports') }}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">
                 <i class="fas fa-file-alt mr-3"></i>
                 <span>Reports</span>
@@ -59,9 +55,9 @@
     </div>
 
     <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold mb-4">Active Users</h3>
-        <div class="text-3xl font-bold text-green-600">{{ $activeUsers ?? 0 }}</div>
-        <p class="text-gray-600">Total users on the platform</p>
+        <h3 class="text-lg font-semibold mb-4">Workforce</h3>
+        <div class="text-3xl font-bold text-green-600">{{ $totalWorkforce ?? 0 }}</div>
+        <p class="text-gray-600">Total assigned workforce</p>
     </div>
 
     <div class="bg-white rounded-lg shadow p-6">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
 class SupplyController extends Controller
 {
     
@@ -37,10 +38,13 @@ class SupplyController extends Controller
     public function chat()
     {
         return view('supplier.chat');
+
     }
 
     public function reports()
     {
+
         return view('supplier.reports');
     }
 }
+
