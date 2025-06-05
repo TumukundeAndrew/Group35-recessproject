@@ -3,47 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 
 class SupplyController extends Controller
 {
+    
+  
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('role:supplier');
     }
 
-    public function application()
+    public function index()
     {
-        return view('supply.application');
-    }
-
-    public function validationStatus()
-    {
-        return view('supply.validation-status');
-    }
-
-    public function chat()
-    {
-        return view('supply.chat');
+        return view('supplier.dashboard');
     }
 
     public function inventory()
     {
-        return view('supply.inventory');
+        return view('supplier.inventory');
     }
 
-    public function stockUpdate()
+    public function orders()
     {
-        return view('supply.stock-update');
+        return view('supplier.orders');
     }
 
-    public function chatManufacturer()
+    public function shipments()
     {
-        return view('supply.chat-manufacturer');
+        return view('supplier.shipments');
+    }
+
+    public function chat()
+    {
+        return view('supplier.chat');
+
     }
 
     public function reports()
     {
-        return view('supply.reports');
+
+        return view('supplier.reports');
     }
-} 
+}
+
